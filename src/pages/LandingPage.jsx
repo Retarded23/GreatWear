@@ -4,8 +4,8 @@ import { ArrowRight, Users, TrendingUp, Heart, Sparkles, ShoppingBag, RefreshCw 
 import { useAuth } from "../context/UseAuth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../services/firebase";
-import ProductCard from "../components/ProductCard";
-import Logo from "/logo.png"
+import Card from "../components/Card";
+import Logo from "../../public/image.png"
 const categories = [
   { name: "Tops", emoji: "👕" },
   { name: "Bottoms", emoji: "👖" },
@@ -202,7 +202,7 @@ const LandingPage = () => {
               {randomItems.map((item,) => (
                 <div
                   key={item.id}                >
-                  <ProductCard item={item} />
+                  <Card item={item} />
                 </div>
               ))}
             </div>
