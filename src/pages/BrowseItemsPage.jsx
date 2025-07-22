@@ -177,34 +177,34 @@ const BrowseItemsPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-zinc-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-orange-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Browse Items</h1>
-          <p className="text-gray-600">
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-extrabold text-zinc-900 mb-2">Browse All Items</h1>
+          <p className="text-lg text-zinc-600">
             Discover amazing pre-loved fashion from our community
           </p>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
+        <div className="bg-white rounded-2xl shadow-xl p-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4 items-center">
             {/* Search */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+            <div className="relative lg:col-span-2">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-400 h-5 w-5" />
               <input
                 type="text"
-                placeholder="Search items..."
+                placeholder="Search by title, tags, or description..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+                className="pl-12 pr-4 py-3 w-full border border-zinc-200 rounded-full bg-white focus:ring-2 focus:ring-rose-400 focus:border-rose-400 transition"
               />
             </div>
 
@@ -212,7 +212,7 @@ const BrowseItemsPage = () => {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+              className="px-3 py-3 w-full border border-zinc-200 rounded-lg bg-white focus:ring-2 focus:ring-rose-400 focus:border-rose-400 transition"
             >
               <option value="">All Categories</option>
               {categories.map(category => (
@@ -222,13 +222,13 @@ const BrowseItemsPage = () => {
 
             {/* Condition Filter */}
             <select
-              value={selectedCondition}
-              onChange={(e) => setSelectedCondition(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="px-3 py-3 w-full border border-zinc-200 rounded-lg bg-white focus:ring-2 focus:ring-rose-400 focus:border-rose-400 transition"
             >
-              <option value="">All Conditions</option>
-              {conditions.map(condition => (
-                <option key={condition} value={condition}>{condition}</option>
+              <option value="">All Categories</option>
+              {categories.map(category => (
+                <option key={category} value={category}>{category}</option>
               ))}
             </select>
 
@@ -236,43 +236,41 @@ const BrowseItemsPage = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+              className="px-3 py-3 w-full border border-zinc-200 rounded-lg bg-white focus:ring-2 focus:ring-rose-400 focus:border-rose-400 transition"
             >
               <option value="newest">Newest First</option>
-              <option value="oldest">Oldest First</option>
               <option value="pointsLow">Points: Low to High</option>
               <option value="pointsHigh">Points: High to Low</option>
-              <option value="titleAZ">Title: A to Z</option>
             </select>
 
             {/* Clear Filters */}
             <button
               onClick={clearFilters}
-              className="px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="px-4 py-3 text-zinc-700 bg-zinc-100 hover:bg-zinc-200 border border-transparent rounded-lg font-semibold transition"
             >
-              Clear Filters
+              Clear
             </button>
           </div>
 
           {/* Results and View Toggle */}
-          <div className="flex justify-between items-center">
-            <p className="text-sm text-gray-600">
+          <div className="flex justify-between items-center border-t border-zinc-100 pt-4">
+            <p className="text-sm text-zinc-600">
               {filteredItems.length > 0 ? (
-                <>Showing {startItem}-{endItem} of {filteredItems.length} items</>
+                <>Showing <strong>{startItem}-{endItem}</strong> of <strong>{filteredItems.length}</strong> items</>
               ) : (
                 <>No items found</>
               )}
             </p>
-            <div className="flex space-x-2">
+            <div className="flex items-center gap-1 bg-rose-50 border border-rose-200 rounded-lg p-1">
               <button
                 onClick={() => setViewMode("grid")}
-                className={`p-2 rounded ${viewMode === "grid" ? "bg-green-100 text-green-600" : "text-gray-400 hover:text-gray-600"}`}
+                className={`p-2 rounded-md transition-colors ${viewMode === "grid" ? "bg-rose-500 text-white shadow" : "text-zinc-500 hover:text-rose-600"}`}
               >
                 <Grid className="h-5 w-5" />
               </button>
               <button
                 onClick={() => setViewMode("list")}
-                className={`p-2 rounded ${viewMode === "list" ? "bg-green-100 text-green-600" : "text-gray-400 hover:text-gray-600"}`}
+                className={`p-2 rounded-md transition-colors ${viewMode === "list" ? "bg-rose-500 text-white shadow" : "text-zinc-500 hover:text-rose-600"}`}
               >
                 <List className="h-5 w-5" />
               </button>
@@ -354,10 +352,10 @@ const BrowseItemsPage = () => {
                       <button
                         key={page}
                         onClick={() => handlePageChange(page)}
-                        className={`px-3 py-1 rounded-lg ${
+                        className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
                           page === currentPage 
-                            ? "bg-green-600 text-white" 
-                            : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                            ? "bg-rose-500 text-white shadow-md" 
+                            : "bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-50"
                         }`}
                       >
                         {page}
@@ -366,7 +364,7 @@ const BrowseItemsPage = () => {
                     <button
                       onClick={() => handlePageChange(currentPage + 1)}
                       disabled={currentPage === totalPages}
-                      className="px-3 py-1 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-3 py-2 rounded-lg bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <ChevronRight className="h-4 w-4" />
                     </button>
@@ -376,16 +374,16 @@ const BrowseItemsPage = () => {
             )}
           </>
         ) : (
-          <div className="text-center py-12">
-            <Filter className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No items found</h3>
-            <p className="text-gray-500 mb-4">
+          <div className="text-center py-16 bg-white rounded-2xl shadow-md">
+            <Filter className="h-16 w-16 text-rose-300 mx-auto mb-4" />
+            <h3 className="text-2xl font-bold text-zinc-800 mb-2">No items found</h3>
+            <p className="text-zinc-600 mb-6 max-w-md mx-auto">
               Try adjusting your search or filter criteria
             </p>
             <button
               onClick={clearFilters}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
-            >
+              className="bg-rose-500 text-white px-6 py-2 rounded-full hover:bg-rose-600 font-semibold transition-colors"
+>
               Clear all filters
             </button>
           </div>

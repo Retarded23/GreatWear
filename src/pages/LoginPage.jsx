@@ -63,12 +63,14 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+   <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 p-4">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Sign in to your GreatWear account
+          <h2 className="text-center text-3xl font-extrabold text-rose-800 mb-2">
+            Sign in to your account
+          </h2>
+          <p className="text-center text-zinc-600 mb-8">
+            Welcome back to <span className="font-semibold text-rose-600">GreatWear!</span>
           </p>
         </div>
       </div>
@@ -142,12 +144,12 @@ const LoginPage = () => {
 
           <div className="mt-6">
             <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">or</span>
-              </div>
+                <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-zinc-300" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                    <span className="px-2 bg-white text-zinc-500">Or continue with</span>
+                </div>
             </div>
             <button
               type="button"
@@ -161,14 +163,14 @@ const LoginPage = () => {
           </div>
 
           <div className="mt-6">
-            <div className="text-center">
-              <p className="text-sm text-gray-600">
-                Don't have an account?{" "}
-                <Link to="/signup" className="font-medium text-green-600 hover:text-green-500">
-                  Sign up here
-                </Link>
-              </p>
-            </div>
+             <div className="px-8 py-4 bg-zinc-50 text-center text-sm">
+                <p className="text-zinc-600">
+                  Don't have an account?{" "}
+                  <Link to="/signup" className="font-medium text-rose-600 hover:text-rose-500">
+                      Sign up here
+                  </Link>
+                </p>
+              </div>
           </div>
         </div>
       </div>

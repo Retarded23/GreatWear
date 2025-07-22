@@ -272,11 +272,7 @@ const ItemDetailPage = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div>
-      </div>
-    );
+        return <div className="flex items-center justify-center min-h-screen bg-orange-50 text-orange-500">Loading...</div>;
   }
 
   if (!item) {
@@ -296,16 +292,18 @@ const ItemDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+     <div className="min-h-screen bg-orange-50 font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center text-gray-600 hover:text-gray-900 mb-6"
-        >
-          <ArrowLeft className="h-5 w-5 mr-2" />
-          Back
-        </button>
+        <div className="mb-6">
+          <button
+              onClick={() => navigate(-1)}
+              className="inline-flex items-center gap-2 text-rose-600 hover:text-rose-800 transition-colors"
+          >
+              <ArrowLeft className="h-5 w-5" />
+              Back to listings
+          </button>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Image Display - Single Image */}
@@ -314,7 +312,7 @@ const ItemDetailPage = () => {
               <img
                 src={item.images?.[0] || "/placeholder-image.jpg"}
                 alt={item.title}
-                className="w-full h-full object-cover"
+                className="w-full h-auto object-cover rounded-2xl shadow-xl"
               />
             </div>
           </div>
@@ -323,52 +321,52 @@ const ItemDetailPage = () => {
           <div className="space-y-6">
             <div>
               <div className="flex justify-between items-start mb-4">
-                <h1 className="text-3xl font-bold text-gray-900">{item.title}</h1>
+                <h1 className="text-4xl font-extrabold text-zinc-900">{item.title}</h1>
                 <div className="flex space-x-2">
                   <button
                     onClick={handleShare}
-                    className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
+                    className="p-2 text-rose-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
                   >
                     <Share2 className="h-5 w-5" />
                   </button>
-                  <button className="p-2 text-gray-400 hover:text-red-500 rounded-lg hover:bg-gray-100">
+                  <button className="p-2 text-rose-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors">
                     <Heart className="h-5 w-5" />
                   </button>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-4 mb-4">
-                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-lg font-semibold">
+              <div className="flex items-center flex-wrap gap-3 mb-4">
+                <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-lg font-semibold">
                   {item.points} points
                 </span>
-                <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                <span className="bg-rose-100 text-rose-800 px-3 py-1 rounded-full text-sm font-medium">
                   {item.category}
                 </span>
-                <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
+                <span className="bg-lime-100 text-lime-800 px-3 py-1 rounded-full text-sm font-medium">
                   {item.condition}
                 </span>
               </div>
             </div>
 
             {/* Item Specs */}
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Item Details</h3>
+            <div className="bg-white rounded-xl p-6 shadow-md">
+              <h3 className="text-xl font-bold text-zinc-800 mb-4">Item Details</h3>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <span className="text-gray-500">Size:</span>
-                  <span className="ml-2 font-medium">{item.size}</span>
+                  <span className="text-zinc-500">Size:</span>
+                  <span className="ml-2 font-medium text-zinc-800">{item.size}</span>
                 </div>
                 <div>
-                  <span className="text-gray-500">Type:</span>
-                  <span className="ml-2 font-medium">{item.type || "Not specified"}</span>
+                  <span className="text-zinc-500">Type:</span>
+                  <span className="ml-2 font-medium text-zinc-800">{item.type || "Not specified"}</span>
                 </div>
                 <div>
-                  <span className="text-gray-500">Condition:</span>
-                  <span className="ml-2 font-medium">{item.condition}</span>
+                  <span className="text-zinc-500">Condition:</span>
+                  <span className="ml-2 font-medium text-zinc-800">{item.condition}</span>
                 </div>
                 <div>
-                  <span className="text-gray-500">Listed:</span>
-                  <span className="ml-2 font-medium">
+                  <span className="text-zinc-500">Listed:</span>
+                  <span className="ml-2 font-medium text-zinc-800">
                     {item.createdAt?.toDate().toLocaleDateString()}
                   </span>
                 </div>
@@ -376,18 +374,18 @@ const ItemDetailPage = () => {
             </div>
 
             {/* Description */}
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Description</h3>
-              <p className="text-gray-600 whitespace-pre-wrap">{item.description}</p>
-              
+            <div className="bg-white rounded-xl p-6 shadow-md">
+              <h3 className="text-xl font-bold text-zinc-800 mb-4">Description</h3>
+              <p className="text-zinc-600 whitespace-pre-wrap leading-relaxed">{item.description}</p>
+
               {item.tags && item.tags.length > 0 && (
                 <div className="mt-4">
-                  <p className="text-sm text-gray-500 mb-2">Tags:</p>
+                  <p className="text-sm text-zinc-500 mb-2">Tags:</p>
                   <div className="flex flex-wrap gap-2">
                     {item.tags.map((tag, index) => (
                       <span
                         key={index}
-                        className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-sm"
+                        className="bg-zinc-100 text-zinc-600 px-3 py-1 rounded-full text-xs font-medium"
                       >
                         #{tag}
                       </span>
@@ -398,18 +396,18 @@ const ItemDetailPage = () => {
             </div>
 
             {/* Seller Info */}
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Listed by</h3>
+            <div className="bg-white rounded-xl p-6 shadow-md">
+              <h3 className="text-xl font-bold text-zinc-800 mb-4">Listed by</h3>
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                  <span className="text-green-600 font-semibold">
+                  <span className="text-zinc-800 font-semibold">
                     {uploader?.name?.charAt(0).toUpperCase()}
                   </span>
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">{uploader?.name}</p>
-                  <div className="flex items-center text-sm text-gray-500">
-                    <Star className="h-4 w-4 text-yellow-500 mr-1" />
+                  <p className="font-bold text-lg text-rose-800">{uploader?.name}</p>
+                  <div className="flex items-center text-sm text-zinc-500">
+                    <Star className="h-4 w-4 text-amber-500 mr-1" />
                     <span>Member since {new Date(uploader?.createdAt).getFullYear()}</span>
                   </div>
                 </div>
@@ -418,66 +416,66 @@ const ItemDetailPage = () => {
 
             {/* Action Buttons */}
             {userLoggedIn && currentUser.uid !== item.uploaderId && item.available && (
-              <div className="space-y-3">
+              <div className="space-y-4 pt-4 border-t border-rose-100">
                 <button
                   onClick={openSwapModal}
-                  className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center"
+                  className="w-full bg-gradient-to-r from-orange-500 to-rose-500 text-white py-3 px-4 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 flex items-center justify-center font-semibold text-lg"
                 >
-                  <MessageCircle className="h-4 w-4 mr-2" />
+                  <MessageCircle className="h-5 w-5 mr-2" />
                   Request to Swap
                 </button>
 
                 <button
                   onClick={handlePointsRedemption}
                   disabled={redeemLoading || currentUser.points < item.points}
-                  className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  className="w-full bg-lime-500 text-white py-3 px-4 rounded-full shadow-lg hover:shadow-xl hover:bg-lime-600 transition-all transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center font-semibold text-lg"
                 >
                   {redeemLoading ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                       Redeeming...
                     </>
                   ) : (
                     <>
                       Redeem with {item.points} Points
                       {currentUser.points < item.points && (
-                        <span className="ml-2 text-sm">
+                        <span className="ml-2 text-sm opacity-90">
                           (Need {item.points - currentUser.points} more)
                         </span>
                       )}
                     </>
                   )}
                 </button>
-
-                <p className="text-sm text-gray-500 text-center">
-                  You have {currentUser.points} points available
+                
+                <p className="text-sm text-zinc-500 text-center">
+                  You have <span className="font-bold text-orange-600">{currentUser.points}</span> points available
                 </p>
               </div>
             )}
 
-            {!userLoggedIn && (
-              <div className="bg-gray-100 rounded-lg p-4 text-center">
-                <p className="text-gray-600 mb-3">
-                  Please login to swap or redeem this item
-                </p>
-                <button
-                  onClick={() => navigate("/login")}
-                  className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
-                >
-                  Login
-                </button>
-              </div>
-            )}
+              {!userLoggedIn && (
+                <div className="bg-orange-100 rounded-xl p-4 text-center">
+                  <p className="text-orange-800 mb-3 font-medium">
+                    Please log in to swap or redeem this item
+                  </p>
+                  <button
+                    onClick={() => navigate("/login")}
+                    className="bg-rose-500 text-white px-8 py-2 rounded-full hover:bg-rose-600 transition-colors font-semibold"
+                  >
+                    Login
+                  </button>
+                </div>
+              )}
 
             {userLoggedIn && currentUser.uid === item.uploaderId && (
-              <div className="bg-green-100 rounded-lg p-4 text-center">
-                <p className="text-green-600 font-medium">This is your item</p>
+              <div className="bg-lime-100 rounded-xl p-4 text-center">
+                <p className="text-lime-800 font-medium">This is your item</p>
               </div>
             )}
 
             {!item.available && (
-              <div className="bg-red-100 rounded-lg p-4 text-center">
-                <p className="text-red-600 font-medium">This item is no longer available</p>
+              <div className="bg-red-100 rounded-xl p-4 text-center">
+                <p className="text-red-700 font-medium">This item is no longer available</p>
               </div>
             )}
           </div>
@@ -545,11 +543,11 @@ const ItemDetailPage = () => {
 
       {/* Swap Request Modal */}
       {showSwapModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-semibold text-gray-900">
+                <h3 className="text-2xl font-bold text-zinc-900">
                   Request Swap for "{item?.title}"
                 </h3>
                 <button
@@ -558,51 +556,49 @@ const ItemDetailPage = () => {
                     setSelectedSwapItem(null);
                     setSwapMessage("");
                   }}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-zinc-400 hover:text-zinc-600"
                 >
                   <X className="h-6 w-6" />
                 </button>
               </div>
 
               {/* Target Item Info */}
-              <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                <h4 className="font-medium text-gray-900 mb-2">You're requesting:</h4>
-                <div className="flex items-center space-x-3">
+              <div className="bg-orange-50 rounded-xl p-4 mb-6">
+                <h4 className="font-semibold text-zinc-800 mb-2">You're requesting:</h4>
+                <div className="flex items-center space-x-4">
                   <img
                     src={item?.images?.[0] || "/placeholder-image.jpg"}
                     alt={item?.title}
-                    className="w-16 h-16 object-cover rounded-lg"
+                    className="w-20 h-20 object-cover rounded-lg"
                   />
                   <div>
-                    <p className="font-medium text-gray-900">{item?.title}</p>
-                    <p className="text-sm text-gray-500">{item?.category} • {item?.size}</p>
-                    <p className="text-sm text-green-600 font-medium">{item?.points} points</p>
+                    <p className="font-bold text-zinc-900">{item?.title}</p>
+                    <p className="text-sm text-zinc-600">{item?.category} • {item?.size}</p>
+                    <p className="text-sm text-orange-600 font-bold">{item?.points} points</p>
                   </div>
                 </div>
               </div>
 
               {/* Select Item to Offer */}
               <div className="mb-6">
-                <h4 className="font-medium text-gray-900 mb-3">
+                <h4 className="font-semibold text-zinc-800 mb-3">
                   Select one of your items to offer (optional):
                 </h4>
                 
                 {loadingUserItems ? (
                   <div className="flex items-center justify-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
                   </div>
                 ) : userItems.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-60 overflow-y-auto">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-60 overflow-y-auto p-1">
                     {userItems.map((userItem) => (
                       <div
                         key={userItem.id}
-                        onClick={() => setSelectedSwapItem(
-                          selectedSwapItem?.id === userItem.id ? null : userItem
-                        )}
-                        className={`border rounded-lg p-3 cursor-pointer transition-all ${
+                        onClick={() => setSelectedSwapItem(selectedSwapItem?.id === userItem.id ? null : userItem)}
+                        className={`border-2 rounded-lg p-3 cursor-pointer transition-all flex items-center space-x-3 ${
                           selectedSwapItem?.id === userItem.id
-                            ? "border-green-500 bg-green-50"
-                            : "border-gray-200 hover:border-gray-300"
+                            ? "border-rose-500 bg-rose-50"
+                            : "border-zinc-200 hover:border-zinc-300"
                         }`}
                       >
                         <div className="flex items-center space-x-3">
@@ -612,19 +608,13 @@ const ItemDetailPage = () => {
                             className="w-12 h-12 object-cover rounded-lg"
                           />
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium text-gray-900 truncate">
-                              {userItem.title}
-                            </p>
-                            <p className="text-sm text-gray-500">
-                              {userItem.category} • {userItem.size}
-                            </p>
-                            <p className="text-sm text-green-600 font-medium">
-                              {userItem.points} points
-                            </p>
+                            <p className="font-bold text-zinc-900 truncate">{userItem.title}</p>
+                            <p className="text-sm text-zinc-500">{userItem.category} • {userItem.size}</p>
+                            <p className="text-sm text-orange-600 font-bold">{userItem.points} points</p>
                           </div>
                           {selectedSwapItem?.id === userItem.id && (
                             <div className="flex-shrink-0">
-                              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                              <div className="w-5 h-5 bg-rose-500 rounded-full flex items-center justify-center ring-2 ring-white">
                                 <div className="w-2 h-2 bg-white rounded-full"></div>
                               </div>
                             </div>
@@ -634,24 +624,24 @@ const ItemDetailPage = () => {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    <Package className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-                    <p>You don't have any available items to offer</p>
-                    <p className="text-sm">You can still send a swap request without offering an item</p>
+                  <div className="text-center py-8 text-zinc-500 bg-zinc-50 rounded-lg">
+                    <Package className="h-12 w-12 text-zinc-400 mx-auto mb-3" />
+                    <p className="font-medium">You don't have any available items to offer</p>
+                    <p className="text-sm">You can still send a swap request without an item.</p>
                   </div>
                 )}
               </div>
 
               {/* Message */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 mb-2">
                   Add a message (optional):
                 </label>
                 <textarea
                   value={swapMessage}
                   onChange={(e) => setSwapMessage(e.target.value)}
                   placeholder="Tell the owner why you'd like to swap this item..."
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
+                  className="w-full p-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-rose-400 focus:border-rose-400 resize-none transition"
                   rows="3"
                   maxLength="500"
                 />
@@ -668,14 +658,14 @@ const ItemDetailPage = () => {
                     setSelectedSwapItem(null);
                     setSwapMessage("");
                   }}
-                  className="flex-1 px-4 py-3 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium"
+                  className="flex-1 px-4 py-3 text-zinc-700 bg-zinc-100 rounded-full hover:bg-zinc-200 font-semibold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSwapRequest}
                   disabled={swapLoading}
-                  className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center justify-center"
+                  className="flex-1 px-4 py-3 text-zinc-700 bg-zinc-100 rounded-full hover:bg-zinc-200 font-semibold transition-colors"
                 >
                   {swapLoading ? (
                     <>

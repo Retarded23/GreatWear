@@ -230,762 +230,261 @@ const AdminPanel = () => {
       toast.error("Failed to update user ban status");
     }
   };
+  const getStatColors = (color) => {
+    switch (color) {
+      case 'rose': return { bg: 'bg-rose-100', text: 'text-rose-600' };
+      case 'orange': return { bg: 'bg-orange-100', text: 'text-orange-600' };
+      case 'amber': return { bg: 'bg-amber-100', text: 'text-amber-600' };
+      case 'lime': return { bg: 'bg-lime-100', text: 'text-lime-600' };
+      case 'sky': return { bg: 'bg-sky-100', text: 'text-sky-600' };
+      default: return { bg: 'bg-zinc-100', text: 'text-zinc-600' };
+    }
+  };
 
-  if (!currentUser?.isAdmin) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h2>
-          <p className="text-gray-600">You do not have admin privileges.</p>
-        </div>
-      </div>
-    );
-  }
-
+  const statCards = [
+    { name: "Total Users", value: stats.totalUsers, icon: Users, color: "rose" },
+    { name: "Total Items", value: stats.totalItems, icon: Package, color: "orange" },
+    { name: "Pending Review", value: stats.pendingItems, icon: TrendingUp, color: "amber" },
+    { name: "Approved Items", value: stats.approvedItems, icon: Check, color: "lime" },
+    { name: "Total Swaps", value: stats.totalSwaps, icon: ArrowRightLeft, color: "sky" },
+  ];
+  
+  const mainTabs = [
+    { key: 'pending', label: 'Pending Items', count: stats.pendingItems },
+    { key: 'items', label: 'All Items', count: stats.totalItems },
+    { key: 'swaps', label: 'Swaps', count: stats.totalSwaps },
+    { key: 'users', label: 'Users', count: stats.totalUsers },
+  ];
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
-          <p className="text-gray-600 mt-2">Manage items, users, and platform content</p>
-        </div>
+    <div className="min-h-screen bg-orange-50 flex flex-col items-center justify-center gap-4">
+      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-rose-500"></div>
+      <p className="text-lg font-semibold text-zinc-600">Loading Admin Data...</p>
+    </div>
+  );
+}
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="bg-blue-100 rounded-md p-3">
-                <Users className="h-6 w-6 text-blue-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Total Users</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalUsers}</p>
+if (!currentUser?.isAdmin) {
+  return (
+    <div className="min-h-screen bg-rose-50 flex flex-col items-center justify-center text-center p-4">
+      <h2 className="text-3xl font-bold text-rose-800">Access Denied</h2>
+      <p className="text-zinc-600 mt-2">You do not have the necessary privileges to view this page.</p>
+    </div>
+  );
+}
+
+return (
+  <div className="min-h-screen bg-orange-50">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Header */}
+      <div className="mb-8 text-center">
+        <h1 className="text-4xl font-extrabold text-zinc-900 mb-2">Admin Panel</h1>
+        <p className="text-lg text-zinc-600">Manage items, users, and platform content</p>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+        {statCards.map((stat) => {
+          const colors = getStatColors(stat.color);
+          return (
+            <div key={stat.name} className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div className="flex items-center">
+                <div className={`${colors.bg} rounded-xl p-3`}>
+                  <stat.icon className={`h-6 w-6 ${colors.text}`} />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-zinc-500">{stat.name}</p>
+                  <p className="text-2xl font-bold text-zinc-900">{stat.value}</p>
+                </div>
               </div>
             </div>
-          </div>
+          );
+        })}
+      </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="bg-green-100 rounded-md p-3">
-                <Package className="h-6 w-6 text-green-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Total Items</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalItems}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="bg-yellow-100 rounded-md p-3">
-                <TrendingUp className="h-6 w-6 text-yellow-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Pending Review</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.pendingItems}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="bg-purple-100 rounded-md p-3">
-                <Check className="h-6 w-6 text-purple-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Approved Items</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.approvedItems}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="bg-indigo-100 rounded-md p-3">
-                <ArrowRightLeft className="h-6 w-6 text-indigo-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Total Swaps</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalSwaps}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Tabs */}
-        <div className="mb-6">
-          <nav className="flex space-x-8 overflow-x-auto">
+      {/* Tabs */}
+      <div className="mb-6">
+        <nav className="flex space-x-4 overflow-x-auto pb-2">
+          {mainTabs.map((tab) => (
             <button
-              onClick={() => setActiveTab("pending")}
-              className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                activeTab === "pending"
-                  ? "border-green-500 text-green-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`py-2 px-4 rounded-full font-semibold text-sm whitespace-nowrap transition-all duration-200 flex items-center gap-2 ${
+                activeTab === tab.key
+                  ? "bg-rose-500 text-white shadow-md"
+                  : "bg-white text-zinc-600 hover:bg-rose-50 hover:text-rose-700"
               }`}
             >
-              Pending Items ({stats.pendingItems})
+              {tab.label}
+              <span className={`px-2 py-0.5 rounded-full text-xs font-mono ${activeTab === tab.key ? 'bg-white/20' : 'bg-zinc-200'}`}>{tab.count}</span>
             </button>
-            <button
-              onClick={() => setActiveTab("items")}
-              className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                activeTab === "items"
-                  ? "border-green-500 text-green-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              }`}
-            >
-              All Items ({stats.totalItems})
-            </button>
-            <button
-              onClick={() => setActiveTab("swaps")}
-              className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                activeTab === "swaps"
-                  ? "border-green-500 text-green-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              }`}
-            >
-              Swaps ({stats.totalSwaps})
-            </button>
-            <button
-              onClick={() => setActiveTab("users")}
-              className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                activeTab === "users"
-                  ? "border-green-500 text-green-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              }`}
-            >
-              Users ({stats.totalUsers})
-            </button>
-          </nav>
-        </div>
+          ))}
+        </nav>
+      </div>
 
-        {/* Tab Content */}
+      {/* Tab Content */}
+      <div className="bg-white rounded-2xl shadow-xl">
+        {/* Pending Items Tab */}
         {activeTab === "pending" && (
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">Items Pending Review</h2>
+          <div>
+            <div className="px-6 py-4 border-b border-rose-100">
+              <h2 className="text-xl font-bold text-zinc-800">Items Pending Review</h2>
             </div>
-            <div className="divide-y divide-gray-200">
+            <div className="divide-y divide-rose-100">
               {pendingItems.length > 0 ? (
                 pendingItems.map((item) => (
-                  <div key={item.id} className="p-6">
-                    <div className="flex items-center space-x-4">
-                      <img
-                        src={item.images?.[0] || "/placeholder-image.jpg"}
-                        alt={item.title}
-                        className="w-20 h-20 object-cover rounded-lg"
-                      />
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900">{item.title}</h3>
-                        <p className="text-sm text-gray-500">{item.category} • {item.size} • {item.condition}</p>
-                        <p className="text-sm text-gray-500">by {item.uploaderName}</p>
-                        <p className="text-sm text-gray-400">
-                          Submitted: {item.createdAt?.toDate().toLocaleDateString()}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-medium text-green-600">{item.points} pts</p>
-                      </div>
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => window.open(`/item/${item.id}`, "_blank")}
-                          className="p-2 text-blue-600 hover:bg-blue-50 rounded"
-                          title="View Item"
-                        >
-                          <Eye className="h-5 w-5" />
-                        </button>
-                        <button
-                          onClick={() => handleApproveItem(item.id)}
-                          className="p-2 text-green-600 hover:bg-green-50 rounded"
-                          title="Approve"
-                        >
-                          <Check className="h-5 w-5" />
-                        </button>
-                        <button
-                          onClick={() => handleRejectItem(item.id)}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded"
-                          title="Reject"
-                        >
-                          <X className="h-5 w-5" />
-                        </button>
-                      </div>
+                  <div key={item.id} className="p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    <img src={item.imageUrls?.[0] || "/placeholder-image.jpg"} alt={item.title} className="w-24 h-24 sm:w-20 sm:h-20 object-cover rounded-lg flex-shrink-0"/>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-zinc-900">{item.title}</h3>
+                      <p className="text-sm text-zinc-500">by {item.uploaderName}</p>
+                      <p className="text-xs text-zinc-400">Submitted: {item.createdAt?.toDate().toLocaleDateString()}</p>
+                    </div>
+                    <div className="text-right font-bold text-orange-600 text-lg">
+                      {item.points} pts
+                    </div>
+                    <div className="flex space-x-1 sm:space-x-2">
+                      <button onClick={() => window.open(`/item/${item.id}`, "_blank")} className="p-2 text-sky-600 hover:bg-sky-50 rounded-full transition-colors" title="View Item"><Eye className="h-5 w-5" /></button>
+                      <button onClick={() => handleApproveItem(item.id)} className="p-2 text-lime-600 hover:bg-lime-50 rounded-full transition-colors" title="Approve"><Check className="h-5 w-5" /></button>
+                      <button onClick={() => handleRejectItem(item.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors" title="Reject"><X className="h-5 w-5" /></button>
                     </div>
                   </div>
                 ))
               ) : (
-                <div className="p-6 text-center text-gray-500">
-                  No pending items for review
-                </div>
+                <div className="p-10 text-center text-zinc-500">No pending items for review.</div>
               )}
             </div>
           </div>
         )}
 
-        {activeTab === "items" && (
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">All Items</h2>
-            </div>
-            <div className="divide-y divide-gray-200">
-              {allItems.map((item) => (
-                <div key={item.id} className="p-6">
-                  <div className="flex items-center space-x-4">
-                    <img
-                      src={item.images?.[0] || "/placeholder-image.jpg"}
-                      alt={item.title}
-                      className="w-16 h-16 object-cover rounded-lg"
-                    />
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900">{item.title}</h3>
-                      <p className="text-sm text-gray-500">{item.category} • {item.size}</p>
-                      <p className="text-sm text-gray-500">by {item.uploaderName}</p>
-                    </div>
-                    <div className="text-center">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        item.status === "approved" ? "bg-green-100 text-green-800" :
-                        item.status === "pending" ? "bg-yellow-100 text-yellow-800" :
-                        "bg-red-100 text-red-800"
-                      }`}>
-                        {item.status}
-                      </span>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-medium text-green-600">{item.points} pts</p>
-                    </div>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => window.open(`/item/${item.id}`, "_blank")}
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded"
-                        title="View Item"
-                      >
-                        <Eye className="h-5 w-5" />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteItem(item.id)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded"
-                        title="Delete Item"
-                      >
-                        <Trash2 className="h-5 w-5" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {activeTab === "swaps" && (
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
-              <h2 className="text-lg font-semibold text-gray-900">Swap Monitoring</h2>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => setSwapFilter("all")}
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    swapFilter === "all"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  All ({swaps.length})
-                </button>
-                <button
-                  onClick={() => setSwapFilter("pending")}
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    swapFilter === "pending"
-                      ? "bg-yellow-100 text-yellow-800"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  Pending ({swaps.filter(s => s.status === "pending").length})
-                </button>
-                <button
-                  onClick={() => setSwapFilter("accepted")}
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    swapFilter === "accepted"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  Accepted ({swaps.filter(s => s.status === "accepted").length})
-                </button>
-                <button
-                  onClick={() => setSwapFilter("rejected")}
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    swapFilter === "rejected"
-                      ? "bg-red-100 text-red-800"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  Rejected ({swaps.filter(s => s.status === "rejected").length})
-                </button>
-                <button
-                  onClick={() => setSwapFilter("completed")}
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    swapFilter === "completed"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  Completed ({swaps.filter(s => s.status === "completed").length})
-                </button>
+        {/* All Items Tab */}
+        {activeTab === 'items' && (
+           <div>
+              <div className="px-6 py-4 border-b border-rose-100">
+                <h2 className="text-xl font-bold text-zinc-800">All Items</h2>
               </div>
-            </div>
-            <div className="divide-y divide-gray-200">
-              {swaps
-                .filter(swap => swapFilter === "all" || swap.status === swapFilter)
-                .map((swap) => (
-                  <div key={swap.id} className="p-4 sm:p-6">
-                    <div className="flex flex-col space-y-4">
-                      {/* Swap Header */}
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
-                        <div className="flex items-center space-x-3">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                              <span className="text-blue-600 font-semibold text-sm">
-                                {swap.requesterName?.charAt(0).toUpperCase()}
-                              </span>
-                            </div>
-                            <span className="text-sm text-gray-500">→</span>
-                            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                              <span className="text-green-600 font-semibold text-sm">
-                                {swap.uploaderName?.charAt(0).toUpperCase()}
-                              </span>
-                            </div>
-                          </div>
-                          <div>
-                            <p className="font-medium text-gray-900 text-sm">
-                              {swap.requesterName} → {swap.uploaderName}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              {swap.createdAt?.toDate().toLocaleDateString()} • 
-                              <span className={`ml-1 font-medium ${
-                                swap.type === "redemption" ? "text-blue-600" : "text-green-600"
-                              }`}>
-                                {swap.type === "redemption" ? "Points Redemption" : "Item Swap"}
-                              </span>
-                              {swap.type === "redemption" && swap.pointsUsed && (
-                                <span className="text-blue-600 ml-1">({swap.pointsUsed} pts)</span>
-                              )}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                            swap.status === "pending" ? "bg-yellow-100 text-yellow-800" :
-                            swap.status === "accepted" ? "bg-green-100 text-green-800" :
-                            swap.status === "rejected" ? "bg-red-100 text-red-800" :
-                            swap.status === "completed" ? "bg-blue-100 text-blue-800" :
-                            "bg-gray-100 text-gray-800"
-                          }`}>
-                            {swap.status.charAt(0).toUpperCase() + swap.status.slice(1)}
-                          </span>
-                          <span className={`px-2 py-1 rounded text-xs font-medium ${
-                            swap.type === "redemption" 
-                              ? "bg-blue-50 text-blue-700 border border-blue-200" 
-                              : "bg-green-50 text-green-700 border border-green-200"
-                          }`}>
-                            {swap.type === "redemption" ? "Redemption" : "Swap"}
-                          </span>
-                        </div>
+              <div className="divide-y divide-rose-100">
+                  {allItems.map(item => (
+                      <div key={item.id} className="p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-4">
+                           <img src={item.imageUrls?.[0] || "/placeholder-image.jpg"} alt={item.title} className="w-20 h-20 object-cover rounded-lg flex-shrink-0"/>
+                           <div className="flex-1">
+                              <h3 className="font-semibold text-zinc-900">{item.title}</h3>
+                              <p className="text-sm text-zinc-500">by {item.uploaderName}</p>
+                           </div>
+                           <div className={`px-3 py-1 text-xs font-medium rounded-full ${
+                               item.status === 'approved' ? 'bg-lime-100 text-lime-800' :
+                               item.status === 'pending' ? 'bg-amber-100 text-amber-800' :
+                               'bg-red-100 text-red-800'
+                           }`}>
+                               {item.status}
+                           </div>
+                           <div className="text-right font-bold text-orange-600 text-lg">{item.points} pts</div>
+                           <div className="flex space-x-1">
+                              <button onClick={() => window.open(`/item/${item.id}`, "_blank")} className="p-2 text-sky-600 hover:bg-sky-50 rounded-full transition-colors" title="View Item"><Eye className="h-5 w-5" /></button>
+                              <button onClick={() => handleDeleteItem(item.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors" title="Delete Item"><Trash2 className="h-5 w-5" /></button>
+                           </div>
                       </div>
-
-                      {/* Swap Details */}
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        {/* Requested Item */}
-                        <div className="bg-gray-50 rounded-lg p-3">
-                          <p className="text-sm font-medium text-gray-700 mb-2">Requested Item:</p>
-                          <div className="flex items-center space-x-3">
-                            <img
-                              src={swap.requestedItem?.images?.[0] || "/placeholder-image.jpg"}
-                              alt={swap.requestedItem?.title || swap.itemTitle}
-                              className="w-12 h-12 object-cover rounded-lg"
-                            />
-                            <div>
-                              <p className="text-sm text-gray-900 font-medium">
-                                {swap.requestedItem?.title || swap.itemTitle}
-                              </p>
-                              <p className="text-xs text-gray-500">by {swap.uploaderName}</p>
-                              {swap.requestedItem && (
-                                <p className="text-xs text-gray-500">
-                                  {swap.requestedItem.category} • {swap.requestedItem.size}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Offered Item or Points */}
-                        {swap.type === "redemption" ? (
-                          <div className="bg-blue-50 rounded-lg p-3">
-                            <p className="text-sm font-medium text-blue-700 mb-2">Payment Method:</p>
-                            <div className="flex items-center space-x-3">
-                              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                <Award className="h-6 w-6 text-blue-600" />
-                              </div>
+                  ))}
+              </div>
+           </div>
+        )}
+        
+        {/* Swaps Tab */}
+        {activeTab === 'swaps' && (
+           <div>
+              <div className="px-6 py-4 border-b border-rose-100 flex justify-between items-center">
+                  <h2 className="text-xl font-bold text-zinc-800">Swap Monitoring</h2>
+                  {/* Filters for swaps can be added here if needed */}
+              </div>
+               <div className="divide-y divide-rose-100">
+                  {swaps.map(swap => (
+                      <div key={swap.id} className="p-4 sm:p-6 space-y-4">
+                          <div className="flex justify-between items-start">
                               <div>
-                                <p className="text-sm text-blue-900 font-medium">
-                                  {swap.pointsUsed || 0} Points
-                                </p>
-                                <p className="text-xs text-blue-600">Points Transfer</p>
+                                  <h3 className="font-semibold text-zinc-800">
+                                      <span className="text-rose-600">{swap.requesterName}</span> → <span className="text-lime-600">{swap.uploaderName}</span>
+                                  </h3>
+                                  <p className="text-xs text-zinc-400">ID: {swap.id.slice(-6)} | {swap.createdAt?.toDate().toLocaleString()}</p>
                               </div>
-                            </div>
+                              <span className={`px-3 py-1 text-xs font-medium rounded-full ${
+                                   swap.status === "pending" ? "bg-amber-100 text-amber-800" :
+                                   swap.status === "accepted" ? "bg-lime-100 text-lime-800" :
+                                   swap.status === "rejected" ? "bg-red-100 text-red-800" :
+                                   "bg-zinc-100 text-zinc-800"
+                              }`}>{swap.status}</span>
                           </div>
-                        ) : (swap.proposedItem || swap.proposedItemTitle) ? (
-                          <div className="bg-blue-50 rounded-lg p-3">
-                            <p className="text-sm font-medium text-blue-700 mb-2">Offered Item:</p>
-                            <div className="flex items-center space-x-3">
-                              <img
-                                src={swap.proposedItem?.images?.[0] || "/placeholder-image.jpg"}
-                                alt={swap.proposedItem?.title || swap.proposedItemTitle}
-                                className="w-12 h-12 object-cover rounded-lg"
-                              />
-                              <div>
-                                <p className="text-sm text-blue-900 font-medium">
-                                  {swap.proposedItem?.title || swap.proposedItemTitle}
-                                </p>
-                                <p className="text-xs text-blue-600">by {swap.requesterName}</p>
-                                {swap.proposedItem && (
-                                  <p className="text-xs text-blue-600">
-                                    {swap.proposedItem.category} • {swap.proposedItem.size}
-                                  </p>
-                                )}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="bg-orange-50 p-3 rounded-lg">
+                                  <p className="text-sm font-semibold text-orange-800 mb-2">Requested Item</p>
+                                  <div className="flex items-center gap-3">
+                                      <img src={swap.requestedItem?.imageUrls?.[0]} className="w-12 h-12 rounded-md object-cover"/>
+                                      <div>
+                                          <p className="text-sm font-medium text-zinc-900">{swap.requestedItem?.title}</p>
+                                          <p className="text-xs text-zinc-600">{swap.requestedItem?.points} pts</p>
+                                      </div>
+                                  </div>
                               </div>
-                            </div>
+                              <div className="bg-rose-50 p-3 rounded-lg">
+                                  <p className="text-sm font-semibold text-rose-800 mb-2">Offered</p>
+                                   {swap.proposedItem ? (
+                                      <div className="flex items-center gap-3">
+                                          <img src={swap.proposedItem?.imageUrls?.[0]} className="w-12 h-12 rounded-md object-cover"/>
+                                          <div>
+                                              <p className="text-sm font-medium text-zinc-900">{swap.proposedItem?.title}</p>
+                                              <p className="text-xs text-zinc-600">{swap.proposedItem?.points} pts</p>
+                                          </div>
+                                      </div>
+                                  ) : (
+                                      <div className="flex items-center gap-3">
+                                          <Award className="h-8 w-8 text-amber-500"/>
+                                          <p className="text-sm font-medium text-zinc-900">Points Redemption</p>
+                                      </div>
+                                  )}
+                              </div>
                           </div>
-                        ) : (
-                          <div className="bg-yellow-50 rounded-lg p-3">
-                            <p className="text-sm font-medium text-yellow-700 mb-2">No Item Offered</p>
-                            <p className="text-xs text-yellow-600">Request without specific item exchange</p>
-                          </div>
-                        )}
                       </div>
-
-                      {/* Message */}
-                      {swap.message && (
-                        <div className="bg-gray-50 rounded-lg p-3">
-                          <p className="text-sm font-medium text-gray-700 mb-1">Message:</p>
-                          <p className="text-sm text-gray-600">{swap.message}</p>
-                        </div>
-                      )}
-
-                      {/* Admin Actions */}
-                      <div className="flex flex-wrap gap-2 pt-2">
-                        <button
-                          onClick={() => window.open(`/item/${swap.itemId}`, "_blank")}
-                          className="px-3 py-2 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 flex items-center"
-                        >
-                          <Eye className="h-3 w-3 mr-1" />
-                          View Requested Item
-                        </button>
-                        {swap.proposedItemId && (
-                          <button
-                            onClick={() => window.open(`/item/${swap.proposedItemId}`, "_blank")}
-                            className="px-3 py-2 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200 flex items-center"
-                          >
-                            <Eye className="h-3 w-3 mr-1" />
-                            View Offered Item
-                          </button>
-                        )}
-                        <button
-                          onClick={fetchAdminData}
-                          className="px-3 py-2 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200 flex items-center"
-                        >
-                          <RefreshCw className="h-3 w-3 mr-1" />
-                          Refresh
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              {swaps.filter(swap => swapFilter === "all" || swap.status === swapFilter).length === 0 && (
-                <div className="p-6 text-center text-gray-500">
-                  <ArrowRightLeft className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p>No swaps found for the selected filter</p>
-                </div>
-              )}
-            </div>
-          </div>
+                  ))}
+               </div>
+           </div>
         )}
 
+        {/* Users Tab */}
         {activeTab === "users" && (
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">Users</h2>
+          <div>
+            <div className="px-6 py-4 border-b border-rose-100">
+              <h2 className="text-xl font-bold text-zinc-800">User Management</h2>
             </div>
-            <div className="divide-y divide-gray-200">
+            <div className="divide-y divide-rose-100">
               {users.map((user) => (
-                <div key={user.id} className="p-4 sm:p-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
-                    <div className="flex items-center space-x-3 flex-1 min-w-0">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-green-600 font-semibold text-sm sm:text-base">
-                          {user.name?.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <h3 className="font-semibold text-gray-900 truncate">{user.name}</h3>
-                        <p className="text-sm text-gray-500 truncate">{user.email}</p>
-                        <p className="text-xs sm:text-sm text-gray-500">
-                          Joined: {new Date(user.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-row sm:flex-col items-center justify-between sm:justify-center sm:text-center space-x-4 sm:space-x-0">
-                      <p className="font-medium text-green-600 text-sm sm:text-base">{user.points || 0} pts</p>
-                      <div className="flex flex-wrap gap-1">
-                        {user.isAdmin ? (
-                          <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium">
-                            Admin
-                          </span>
-                        ) : (
-                          <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs">
-                            User
-                          </span>
-                        )}
-                        {user.banned && (
-                          <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium">
-                            Banned
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    
-                    {user.id !== currentUser.uid && (
-                      <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                        <button
-                          onClick={() => handleToggleUserAdmin(user.id, user.isAdmin)}
-                          className={`px-3 py-2 rounded text-xs sm:text-sm font-medium text-center ${
-                            user.isAdmin
-                              ? "bg-red-100 text-red-700 hover:bg-red-200"
-                              : "bg-purple-100 text-purple-700 hover:bg-purple-200"
-                          }`}
-                        >
-                          {user.isAdmin ? "Remove Admin" : "Make Admin"}
-                        </button>
-                        <button
-                          onClick={() => handleToggleBanUser(user.id, user.banned)}
-                          className={`px-3 py-2 rounded text-xs sm:text-sm font-medium flex items-center justify-center ${
-                            user.banned
-                              ? "bg-green-100 text-green-700 hover:bg-green-200"
-                              : "bg-red-100 text-red-700 hover:bg-red-200"
-                          }`}
-                        >
-                          {user.banned ? (
-                            <>
-                              <Shield className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                              Unban
-                            </>
-                          ) : (
-                            <>
-                              <Ban className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                              Ban
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {activeTab === "swaps" && (
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
-              <h2 className="text-lg font-semibold text-gray-900">Swap Requests</h2>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => setSwapFilter("all")}
-                  className={`px-3 py-2 rounded text-sm font-medium ${
-                    swapFilter === "all"
-                      ? "bg-green-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  All ({swaps.length})
-                </button>
-                <button
-                  onClick={() => setSwapFilter("pending")}
-                  className={`px-3 py-2 rounded text-sm font-medium ${
-                    swapFilter === "pending"
-                      ? "bg-yellow-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  Pending ({swaps.filter(s => s.status === "pending").length})
-                </button>
-                <button
-                  onClick={() => setSwapFilter("accepted")}
-                  className={`px-3 py-2 rounded text-sm font-medium ${
-                    swapFilter === "accepted"
-                      ? "bg-green-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  Accepted ({swaps.filter(s => s.status === "accepted").length})
-                </button>
-                <button
-                  onClick={() => setSwapFilter("rejected")}
-                  className={`px-3 py-2 rounded text-sm font-medium ${
-                    swapFilter === "rejected"
-                      ? "bg-red-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  Rejected ({swaps.filter(s => s.status === "rejected").length})
-                </button>
-              </div>
-            </div>
-            <div className="divide-y divide-gray-200">
-              {swaps
-                .filter(swap => swapFilter === "all" || swap.status === swapFilter)
-                .map((swap) => (
-                <div key={swap.id} className="p-4 sm:p-6">
-                  <div className="flex flex-col space-y-4">
-                    {/* Swap Header */}
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className="bg-indigo-100 rounded-full p-2">
-                          <ArrowRightLeft className="h-5 w-5 text-indigo-600" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-900">Swap Request #{swap.id.slice(-6)}</h3>
-                          <p className="text-sm text-gray-500">
-                            Created: {swap.createdAt?.toDate().toLocaleDateString()}
-                            {swap.acceptedAt && ` • Accepted: ${swap.acceptedAt.toDate().toLocaleDateString()}`}
-                            {swap.rejectedAt && ` • Rejected: ${swap.rejectedAt.toDate().toLocaleDateString()}`}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2 mt-2 sm:mt-0">
-                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          swap.status === "pending" ? "bg-yellow-100 text-yellow-800" :
-                          swap.status === "accepted" ? "bg-green-100 text-green-800" :
-                          swap.status === "rejected" ? "bg-red-100 text-red-800" :
-                          "bg-gray-100 text-gray-800"
-                        }`}>
-                          {swap.status.charAt(0).toUpperCase() + swap.status.slice(1)}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Swap Participants */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                      {/* Requester Side */}
-                      <div className="bg-gray-50 rounded-lg p-4">
-                        <h4 className="font-medium text-gray-900 mb-3">Requester</h4>
-                        <div className="flex items-center space-x-3 mb-3">
-                          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                            <span className="text-blue-600 font-semibold text-sm">
-                              {swap.requesterName?.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                          <div>
-                            <p className="font-medium text-gray-900">{swap.requesterName}</p>
-                            <p className="text-sm text-gray-500">{swap.requesterEmail}</p>
-                          </div>
-                        </div>
-                        {swap.proposedItemId && (
-                          <div className="border rounded-lg p-3 bg-white">
-                            <p className="text-sm font-medium text-gray-700">Proposed Item:</p>
-                            <p className="text-sm text-gray-600">{swap.proposedItemTitle}</p>
-                            <button
-                              onClick={() => window.open(`/item/${swap.proposedItemId}`, "_blank")}
-                              className="text-blue-600 hover:text-blue-800 text-sm flex items-center mt-1"
-                            >
-                              <Eye className="h-4 w-4 mr-1" />
-                              View Item
-                            </button>
-                          </div>
-                        )}
-                        {swap.message && (
-                          <div className="mt-3 p-3 bg-blue-50 rounded border">
-                            <p className="text-sm font-medium text-blue-800">Message:</p>
-                            <p className="text-sm text-blue-700 mt-1">{swap.message}</p>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Owner Side */}
-                      <div className="bg-gray-50 rounded-lg p-4">
-                        <h4 className="font-medium text-gray-900 mb-3">Item Owner</h4>
-                        <div className="flex items-center space-x-3 mb-3">
-                          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                            <span className="text-green-600 font-semibold text-sm">
-                              {swap.uploaderName?.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                          <div>
-                            <p className="font-medium text-gray-900">{swap.uploaderName}</p>
-                            <p className="text-sm text-gray-500">{swap.uploaderEmail}</p>
-                          </div>
-                        </div>
-                        <div className="border rounded-lg p-3 bg-white">
-                          <p className="text-sm font-medium text-gray-700">Requested Item:</p>
-                          <p className="text-sm text-gray-600">{swap.itemTitle}</p>
-                          <button
-                            onClick={() => window.open(`/item/${swap.itemId}`, "_blank")}
-                            className="text-blue-600 hover:text-blue-800 text-sm flex items-center mt-1"
-                          >
-                            <Eye className="h-4 w-4 mr-1" />
-                            View Item
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Swap Type and Points */}
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm text-gray-600 pt-2 border-t">
-                      <div className="flex items-center space-x-4">
-                        <span className="font-medium">Type: 
-                          <span className="text-gray-900 ml-1">
-                            {swap.type === "swap" ? "Item Swap" : "Points Exchange"}
-                          </span>
-                        </span>
-                        {swap.pointsOffered && (
-                          <span className="font-medium">Points Offered: 
-                            <span className="text-green-600 ml-1">{swap.pointsOffered}</span>
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center space-x-2 mt-2 sm:mt-0">
-                        <button
-                          onClick={() => fetchAdminData()}
-                          className="p-2 text-gray-400 hover:text-gray-600 rounded"
-                          title="Refresh"
-                        >
-                          <RefreshCw className="h-4 w-4" />
-                        </button>
-                      </div>
+                <div key={user.id} className="p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                  <div className="flex items-center space-x-4 flex-1">
+                    <img src={user.avatar} alt={user.name} className="w-12 h-12 rounded-full object-cover ring-2 ring-rose-200" />
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-zinc-900 truncate">{user.name}</h3>
+                      <p className="text-sm text-zinc-500 truncate">{user.email}</p>
                     </div>
                   </div>
+                  <div className="flex items-center gap-4">
+                    <span className="font-bold text-orange-600">{user.points || 0} pts</span>
+                    {user.isAdmin && <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium">Admin</span>}
+                    {user.banned && <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium">Banned</span>}
+                  </div>
+                  {user.id !== currentUser.uid && (
+                    <div className="flex gap-2 w-full sm:w-auto">
+                      <button onClick={() => handleToggleUserAdmin(user.id, user.isAdmin)} className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${user.isAdmin ? "bg-red-100 text-red-700 hover:bg-red-200" : "bg-purple-100 text-purple-700 hover:bg-purple-200"}`}>{user.isAdmin ? "Remove Admin" : "Make Admin"}</button>
+                      <button onClick={() => handleToggleBanUser(user.id, user.banned)} className={`px-3 py-2 rounded-lg text-xs font-medium flex items-center transition-colors ${user.banned ? "bg-lime-100 text-lime-700 hover:bg-lime-200" : "bg-red-100 text-red-700 hover:bg-red-200"}`}>{user.banned ? <><Shield className="h-4 w-4 mr-1" /> Unban</> : <><Ban className="h-4 w-4 mr-1" /> Ban</>}</button>
+                    </div>
+                  )}
                 </div>
               ))}
-              {swaps.filter(swap => swapFilter === "all" || swap.status === swapFilter).length === 0 && (
-                <div className="p-6 text-center text-gray-500">
-                  No {swapFilter === "all" ? "" : swapFilter} swap requests found
-                </div>
-              )}
             </div>
           </div>
         )}
       </div>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default AdminPanel;

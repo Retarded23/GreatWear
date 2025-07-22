@@ -100,7 +100,7 @@ const CategoryPage = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="flex items-center space-x-2">
-          <RefreshCw className="h-8 w-8 text-green-500 animate-spin" />
+          <RefreshCw className="h-8 w-8 text-zinc-500 animate-spin" />
           <span className="text-gray-600">Loading {category} items...</span>
         </div>
       </div>
@@ -108,50 +108,49 @@ const CategoryPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-orange-50">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-green-100">
+      <div className="bg-white shadow-sm border-b border-rose-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center gap-4 mb-6">
-            <Link
-              to="/browse"
-              className="flex items-center text-green-600 hover:text-green-700 transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5 mr-2" />
-              Back to Browse
-            </Link>
-          </div>
-          
-          <div className="flex items-center gap-4 mb-6">
-            <span className="text-4xl">{getCategoryIcon(category)}</span>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">{category}</h1>
-              <p className="text-gray-600">
-                {filteredItems.length} item{filteredItems.length !== 1 ? 's' : ''} available
-              </p>
-            </div>
-          </div>
-
-          {/* Search and Filters */}
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  <span className="text-4xl">{getCategoryIcon(category)}</span>
+                  <div>
+                    <h1 className="text-3xl font-extrabold text-zinc-900">{category}</h1>
+                    <p className="text-zinc-600">
+                      {filteredItems.length} item{filteredItems.length !== 1 ? 's' : ''} available
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  to="/browse"
+                  className="flex items-center text-rose-600 hover:text-rose-700 transition-colors font-medium"
+                >
+                  <ArrowLeft className="h-5 w-5 mr-2" />
+                  Back to Browse
+                </Link>
+              </div>
+        </div>
+        {/* Search and Filters */}
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <div className="relative flex-1 w-full max-w-md">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-zinc-400" />
               <input
                 type="text"
                 placeholder="Search in this category..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+                className="pl-12 pr-4 py-3 w-full border border-zinc-200 rounded-full bg-white focus:ring-2 focus:ring-rose-400 focus:border-rose-400 transition"
               />
             </div>
 
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <Filter className="h-5 w-5 text-gray-400" />
+                <Filter className="h-5 w-5 text-zinc-400" />
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+                  className="px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:ring-2 focus:ring-rose-400 focus:border-rose-400 transition"
                 >
                   <option value="newest">Newest First</option>
                   <option value="oldest">Oldest First</option>
@@ -161,41 +160,41 @@ const CategoryPage = () => {
                 </select>
               </div>
 
-              <div className="flex items-center gap-1 bg-white border border-gray-300 rounded-lg p-1">
+              <div className="flex items-center gap-1 bg-rose-50 border border-rose-200 rounded-lg p-1">
                 <button
                   onClick={() => setViewMode("grid")}
-                  className={`p-2 rounded ${viewMode === "grid" ? "bg-green-100 text-green-600" : "text-gray-400 hover:text-gray-600"}`}
+                  className={`p-2 rounded-md transition-colors ${viewMode === "grid" ? "bg-rose-500 text-white shadow" : "text-zinc-500 hover:text-rose-600"}`}
                 >
                   <Grid className="h-5 w-5" />
                 </button>
                 <button
                   onClick={() => setViewMode("list")}
-                  className={`p-2 rounded ${viewMode === "list" ? "bg-green-100 text-green-600" : "text-gray-400 hover:text-gray-600"}`}
+                  className={`p-2 rounded-md transition-colors ${viewMode === "list" ? "bg-rose-500 text-white shadow" : "text-zinc-500 hover:text-rose-600"}`}
                 >
                   <List className="h-5 w-5" />
                 </button>
               </div>
             </div>
-          </div>
         </div>
       </div>
+      
 
       {/* Category Navigation */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center gap-2 overflow-x-auto">
+      <div className="bg-white border-b border-zinc-200 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2">
             {categories.map((cat) => (
               <Link
                 key={cat}
                 to={`/category/${cat}`}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-colors ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-all duration-200 text-sm ${
                   cat === category
-                    ? "bg-green-100 text-green-700 border border-green-200"
-                    : "text-gray-600 hover:text-green-600 hover:bg-green-50"
+                    ? "bg-rose-500 text-white font-semibold shadow"
+                    : "text-zinc-600 bg-zinc-100 hover:text-rose-700 hover:bg-rose-100"
                 }`}
               >
                 <span className="text-lg">{getCategoryIcon(cat)}</span>
-                <span className="font-medium">{cat}</span>
+                <span>{cat}</span>
               </Link>
             ))}
           </div>
@@ -204,19 +203,24 @@ const CategoryPage = () => {
 
       {/* Items Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {filteredItems.length === 0 ? (
-          <div className="text-center py-16">
+        {loading ? (
+            <div className="text-center py-16">
+              <RefreshCw className="h-8 w-8 text-orange-500 animate-spin mx-auto" />
+              <p className="mt-4 text-zinc-600">Loading Items...</p>
+            </div>
+          ) : filteredItems.length === 0 ? (
+          <div className="text-center py-16 bg-white rounded-2xl shadow-md">
             <div className="text-6xl mb-4">{getCategoryIcon(category)}</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            <h3 className="text-2xl font-bold text-zinc-800 mb-2">
               No {category} items found
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-zinc-600 mb-6 max-w-md mx-auto">
               {searchTerm ? `No items match "${searchTerm}" in ${category}` : `No ${category} items are currently available`}
             </p>
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
-                className="text-green-600 hover:text-green-700 font-medium"
+                className="text-rose-600 hover:text-rose-700 font-semibold"
               >
                 Clear search
               </button>

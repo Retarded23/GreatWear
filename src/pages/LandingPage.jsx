@@ -5,7 +5,8 @@ import { useAuth } from "../context/UseAuth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../services/firebase";
 import Card from "../components/Card";
-import Logo from "../../public/image.png"
+import Logo from "../../public/image.png";
+
 const categories = [
   { name: "Tops", emoji: "👕" },
   { name: "Bottoms", emoji: "👖" },
@@ -20,10 +21,10 @@ const categories = [
 ];
 
 const stats = [
-  { icon: Users, value: "10K+", label: "Active Users", color: "text-blue-600" },
-  { icon: ShoppingBag, value: "50K+", label: "Items Swapped", color: "text-green-600" },
-  { icon: Heart, value: "95%", label: "Satisfaction Rate", color: "text-green-600" },
-  { icon: TrendingUp, value: "2.5K", label: "Monthly Swaps", color: "text-green-600" },
+  { icon: Users, value: "10K+", label: "Active Users" },
+  { icon: ShoppingBag, value: "50K+", label: "Items Swapped" },
+  { icon: Heart, value: "95%", label: "Satisfaction Rate" },
+  { icon: TrendingUp, value: "2.5K+", label: "Monthly Swaps" },
 ];
 
 function getRandomItems(arr, n) {
@@ -60,35 +61,32 @@ const LandingPage = () => {
     fetchItems();
   }, []);
 
-
-
   const randomItems = getRandomItems(items, 6);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+    <div className="min-h-screen bg-orange-50 text-zinc-700">
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10"></div>
+      <section className="relative overflow-hidden bg-rose-50">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
           <div className="text-center">
-            <div className="inline-flex items-center bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 mb-8 shadow-lg">
-              <Sparkles className="h-5 w-5 text-green-500 mr-2" />
-              <span className="text-sm font-medium text-gray-700">Join the fashion revolution</span>
+            <div className="inline-flex items-center bg-white/70 backdrop-blur-sm rounded-full px-4 py-2 mb-8 shadow-sm">
+              <Sparkles className="h-5 w-5 text-orange-500 mr-2" />
+              <span className="text-sm font-medium text-zinc-600">Join the fashion revolution</span>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-4 leading-tight">
+            <h1 className="text-5xl md:text-7xl font-bold text-zinc-900 mb-4 leading-tight">
               <img src={Logo} alt="ReWear Logo" className="h-16 md:h-24 inline-block mr-2" />
               {userLoggedIn
                 ? (<>
-                    <span className="block">Welcome Back <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 bg-clip-text text-transparent">{currentUser?.name?.split(' ')[0] || ''}</span></span>
-                    <span className="block text-3xl md:text-4xl font-bold text-green-700 mt-2">What are you looking for today?</span>
+                    <span className="block">Welcome Back, <span className="bg-gradient-to-r from-orange-500 via-rose-500 to-pink-500 bg-clip-text text-transparent">{currentUser?.name?.split(' ')[0] || ''}</span></span>
+                    <span className="block text-3xl md:text-4xl font-bold text-rose-800 mt-2">What are you looking for today?</span>
                   </>)
                 : (<>
-                    Start your journey with <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 bg-clip-text text-transparent">GreatWear</span>
+                    Start your journey with <span className="bg-gradient-to-r from-orange-500 via-rose-500 to-pink-500 bg-clip-text text-transparent">GreatWear</span>
                   </>)}
             </h1>
             
-            <p className="text-xl md:text-2xl text-gray-700 mb-12 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-zinc-600 mb-12 max-w-4xl mx-auto leading-relaxed">
               Curate Your Wardrobe. Cultivate Your Circle.
             </p>
             
@@ -96,7 +94,7 @@ const LandingPage = () => {
               {!userLoggedIn ? (
                 <Link 
                   to="/login" 
-                  className="group bg-gradient-to-r from-green-500 to-emerald-400 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 inline-flex items-center justify-center text-lg"
+                  className="group bg-gradient-to-r from-orange-500 to-rose-500 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 inline-flex items-center justify-center text-lg"
                 >
                   Start Swapping 
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -105,23 +103,16 @@ const LandingPage = () => {
                 <>
                   <Link 
                     to="/browse" 
-                    className="group bg-white text-green-600 border-2 border-green-200 px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 inline-flex items-center justify-center text-lg hover:bg-green-50"
+                    className="group bg-rose-500 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 inline-flex items-center justify-center text-lg hover:bg-rose-600"
                   >
                     Browse Items 
                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </Link>
                   <Link 
                     to="/add-item" 
-                    className="group bg-green-100 text-green-700 px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 inline-flex items-center justify-center text-lg hover:bg-green-200"
+                    className="group bg-lime-100 text-lime-800 px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 inline-flex items-center justify-center text-lg hover:bg-lime-200"
                   >
                     List an Item 
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                  <Link
-                    to="/dashboard"
-                    className="group bg-yellow-100 text-green-700 px-8 py-4 rounded-full font-semibold shadow-lg hover:bg-yellow-200 transition-all duration-300 transform hover:-translate-y-1 inline-flex items-center justify-center text-lg"
-                  >
-                    Go to Dashboard
                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </>
@@ -132,20 +123,16 @@ const LandingPage = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-white/50 backdrop-blur-sm">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div 
-                key={stat.label}
-                className="text-center group"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-100 to-emerald-100 rounded-full mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <stat.icon className={`h-8 w-8 ${stat.color}`} />
+            {stats.map((stat) => (
+              <div key={stat.label} className="text-center group">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-4 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                  <stat.icon className="h-8 w-8 text-orange-600" />
                 </div>
-                <div className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</div>
-                <div className="text-gray-600 font-medium">{stat.label}</div>
+                <div className="text-3xl font-bold text-zinc-900 mb-2">{stat.value}</div>
+                <div className="text-zinc-600 font-medium">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -153,26 +140,25 @@ const LandingPage = () => {
       </section>
 
       {/* Categories Section */}
-      <section className="py-20">
+      <section className="py-20 bg-orange-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Explore Categories</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold text-zinc-900 mb-4">Explore Categories</h2>
+            <p className="text-xl text-zinc-600 max-w-2xl mx-auto">
               Find exactly what you're looking for across our diverse collection of fashion categories
             </p>
           </div>
           
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
-            {categories.map((cat, index) => (
+            {categories.map((cat) => (
               <Link
                 key={cat.name}
                 to={`/browse?category=${cat.name.toLowerCase().replace(/\s+/g, '-')}`}
-                className="group relative bg-green-50 rounded-2xl shadow-md py-8 px-4 flex flex-col items-center justify-center transition-all duration-300 cursor-pointer hover:-translate-y-2 hover:bg-green-100 hover:ring-2 hover:ring-green-300"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="group relative bg-white rounded-2xl shadow-sm py-8 px-4 flex flex-col items-center justify-center transition-all duration-300 cursor-pointer hover:-translate-y-2 hover:bg-rose-50 hover:ring-2 hover:ring-rose-200"
               >
                 <div className="flex flex-col items-center justify-center">
                   <span className="text-5xl mb-3 drop-shadow-sm transition-transform group-hover:scale-110">{cat.emoji}</span>
-                  <span className="font-semibold text-green-900 text-base tracking-tight mt-1 text-center group-hover:text-green-700 transition-colors">{cat.name}</span>
+                  <span className="font-semibold text-zinc-800 text-base tracking-tight mt-1 text-center group-hover:text-rose-800 transition-colors">{cat.name}</span>
                 </div>
               </Link>
             ))}
@@ -181,11 +167,11 @@ const LandingPage = () => {
       </section>
 
       {/* Featured Products Section */}
-      <section className="py-20">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Featured Items</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold text-zinc-900 mb-4">Featured Items</h2>
+            <p className="text-xl text-zinc-600 max-w-2xl mx-auto">
               Discover amazing pre-loved fashion pieces from our community
             </p>
           </div>
@@ -193,15 +179,14 @@ const LandingPage = () => {
           {loading ? (
             <div className="flex justify-center items-center py-16">
               <div className="flex items-center space-x-2">
-                <RefreshCw className="h-8 w-8 text-green-500 animate-spin" />
-                <span className="text-gray-600">Loading amazing items...</span>
+                <RefreshCw className="h-8 w-8 text-orange-500 animate-spin" />
+                <span className="text-zinc-600">Loading amazing items...</span>
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-8">
-              {randomItems.map((item,) => (
-                <div
-                  key={item.id}                >
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {randomItems.map((item) => (
+                <div key={item.id}>
                   <Card item={item} />
                 </div>
               ))}
@@ -211,7 +196,7 @@ const LandingPage = () => {
           <div className="text-center mt-12">
             <Link
               to="/browse"
-              className="inline-flex items-center bg-gradient-to-r from-green-500 to-emerald-400 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              className="inline-flex items-center bg-gradient-to-r from-orange-500 to-rose-500 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
             >
               View All Items
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -222,7 +207,7 @@ const LandingPage = () => {
 
       {/* CTA Section */}
       {!userLoggedIn ? (
-        <section className="py-20 bg-gradient-to-r from-green-500 to-emerald-400">
+        <section className="py-20 bg-gradient-to-r from-orange-500 to-rose-500">
           <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Ready to Start Your Fashion Journey?
@@ -230,7 +215,7 @@ const LandingPage = () => {
             
             <Link
               to="/signup"
-              className="bg-white text-green-600 px-8 py-4 rounded-lg font-semibold hover:bg-green-50 transition-colors inline-flex items-center"
+              className="bg-white text-rose-600 px-8 py-4 rounded-lg font-semibold hover:bg-orange-50 transition-colors inline-flex items-center"
             >
               Join GreatWear Now
               <ArrowRight className="ml-2 h-5 w-5" />
