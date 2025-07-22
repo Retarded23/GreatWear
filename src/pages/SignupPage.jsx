@@ -62,9 +62,9 @@ const SignupPage = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 p-4">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center">
-<h2 className="text-3xl font-bold bg-gradient-to-r from-orange-500 via-rose-500 to-pink-500 bg-clip-text text-transparent">
-  Join GreatWear
-</h2>
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-orange-500 via-rose-500 to-pink-500 bg-clip-text text-transparent">
+            Join GreatWear
+          </h2>
           <p className="text-center text-sm text-zinc-600 mb-8">
             Start your fashion journey today
           </p>
